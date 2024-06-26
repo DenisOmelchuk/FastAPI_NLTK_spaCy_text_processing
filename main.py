@@ -43,3 +43,28 @@ async def tokenize_text(request: TextRequest):
         return tokens
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to tokenize text: {str(e)}")
+
+
+@app.post("/pos_tag")
+async def pos_tag_text(request: TextRequest):
+    """
+    Tokenizes and tags parts of text for the input text using NLTK.
+
+    Args:
+        request (TextRequest): Request body containing the text to tokenize.
+
+    Returns:
+        list: List of dictionaries, each containing 'token' and 'tag' for each word/token.
+
+    Raises:
+        HTTPException: If there is an error during tokenization or if input is not a string.
+    """
+    try:
+        tokens = nltk.word_tokenize(request.text)
+        tagged_tokens = nltk.pos_tag(tokens)
+        tagged_tokens_dict = [{"token": token, "tag": tag} for token, tag in tagged_tokens]
+        return tagged_tokens_dict
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to tokenize text: {str(e)}")
+
+
