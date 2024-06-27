@@ -6,9 +6,12 @@ import nltk
 import spacy
 
 app = FastAPI()
+
+# Load SpaCy NLP pipeline for English
 nlp = spacy.load("en_core_web_sm")
 
 
+# Define Pydantic model for request body
 class TextRequest(BaseModel):
     text: str
 
