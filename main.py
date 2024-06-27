@@ -98,3 +98,9 @@ async def ner_text(request: TextRequest):
         return entities_list
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process text for NER: {str(e)}")
+
+
+# This block will run if this script is executed directly
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)
