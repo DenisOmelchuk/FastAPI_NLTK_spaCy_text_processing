@@ -1,11 +1,38 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from nltk_setup import download_nltk_data_packages
 from contextlib import asynccontextmanager
 from pydantic import BaseModel
 import nltk
 import spacy
+from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# CORS (Cross-Origin Resource Sharing) middleware configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins / You could change it to your web-page domain
+    allow_credentials=True,
+    allow_methods=["POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Accept"],
+)
+
+
+# Security headers middleware setup
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+
+    """
+    Set Content-Security-Policy to restrict all content sources to the same origin ('self').
+    Uncomment the following line to apply this policy if needed.
+    """
+    # response.headers["Content-Security-Policy"] = "default-src 'self'"
+
+    return response
 
 # Load SpaCy NLP pipeline for English
 nlp = spacy.load("en_core_web_sm")
