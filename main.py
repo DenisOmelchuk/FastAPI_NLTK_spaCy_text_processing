@@ -3,8 +3,10 @@ from nltk_setup import download_nltk_data_packages
 from contextlib import asynccontextmanager
 from pydantic import BaseModel
 import nltk
+import spacy
 
 app = FastAPI()
+nlp = spacy.load("en_core_web_sm")
 
 
 class TextRequest(BaseModel):
@@ -68,3 +70,28 @@ async def pos_tag_text(request: TextRequest):
         raise HTTPException(status_code=500, detail=f"Failed to tokenize text: {str(e)}")
 
 
+@app.post("/ner")
+async def ner_text(request: TextRequest):
+    """
+    Performs Named Entity Recognition (NER) on the input text using SpaCy.
+    It processes the text and identifies named entities using SpaCy's NER capabilities.
+
+    Args:
+        request (TextRequest): Request body containing the text to process for NER.
+
+    Returns:
+        list: A list of entities and their labels.
+              The format is [[entity, label]] where `entity` is the
+              recognized named entity and `label` is the type of the entity.
+
+    Raises:
+        HTTPException: If there is an error during NER processing, a 500 status code is returned
+                       with an error message.
+    """
+    try:
+        doc = nlp(request.text)
+        entities_list = [(ent.text, ent.label_) for ent in doc.ents]
+
+        return entities_list
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to process text for NER: {str(e)}")
