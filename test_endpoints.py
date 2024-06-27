@@ -5,7 +5,9 @@ from main import app
 client = TestClient(app)
 
 
-# tokenize endpoint tests
+"""
+Test cases for /tokenize endpoint
+"""
 @pytest.mark.parametrize("text, expected_tokens", [
     ("Hello world!", ["Hello", "world", "!"]),
     ("This is a test message.", ["This", "is", "a", "test", "message", "."]),
@@ -37,7 +39,9 @@ def test_tokenize_text_invalid_format():
     assert "text" in response.json()["detail"][0]["input"]
 
 
-# Test cases for /pos_tag endpoint
+"""
+Test cases for /pos_tag endpoint
+"""
 @pytest.mark.parametrize("text, expected_tokens", [
     ("Hello world!", [{"token": "Hello", "tag": "NNP"}, {"token": "world", "tag": "NN"}, {"token": "!", "tag": "."}]),
     ("This is a test message.", [{"token": "This", "tag": "DT"}, {"token": "is", "tag": "VBZ"}, {"token": "a", "tag": "DT"},
