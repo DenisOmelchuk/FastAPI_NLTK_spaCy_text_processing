@@ -11,15 +11,17 @@ This application provides text processing functionalities using FastAPI, NLTK, a
 ### 1. Using git clone
 Steps:
 
-1: Create a virtual environment: 
 
-    python -m venv venv
 
-2: Clone the project:
+1: Clone the project:
 
     git clone https://github.com/DenisOmelchuk/FastAPI_NLTK_spaCy_text_processing.git
 
     cd FastAPI_NLTK_spaCy_text_processing
+
+2: Create a virtual environment: 
+
+    python -m venv venv
 
 3: Activate the virtual environment:
 
@@ -44,9 +46,32 @@ The application should now be running on http://127.0.0.1:8000.
 
 ### 2. Using Docker
 
-Open terminal and run:
+1: Open terminal
 
-    docker run -p 8000:8000 denysomelchuk/fast_api_nltk_spacy_text_processing:latest
+2: Pull the Docker Image:
+
+    docker pull denysomelchuk/fast_api_nltk_spacy_text_processing:latest
+
+3: Run the Docker Container Interactively:
+
+    docker run -it denysomelchuk/fast_api_nltk_spacy_text_processing:latest /bin/sh
+
+4: Start Uvicorn Within the Container:
+
+    uvicorn main:app --reload --host 127.0.0.1 --port 8000
+
+To exit or quit the Docker console and stop the server:
+
+• Windows:
+
+type "exit" and then press "Enter" or close the window
+
+    exit
+
+• macOS/Linux:
+
+press Ctrl + D or close the window
+
 
 The application should now be running on http://127.0.0.1:8000.
 
