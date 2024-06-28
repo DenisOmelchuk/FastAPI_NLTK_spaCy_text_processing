@@ -6,4 +6,3 @@ services:
     command: sh -c 'uvicorn main:app --reload'
     ports:
       - 8000:8000
-
